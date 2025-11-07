@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>简单聊天 Demo</title>
+    <style>
+        :root {
+            --bg: #f6f7fb;
+            --user: #d1e7ff;
+            --assistant: #fff
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            font-family: Segoe UI, Roboto, Helvetica, Arial;
+            background: var(--bg)
+        }
+
+        .wrap {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            max-width: 800px;
+            margin: 0 auto;
+            border-left: 1px solid #e6e9ef;
+            border-right: 1px solid #e6e9ef
+        }
+
+        header {
+            padding: 12px 16px;
+            background: #fff;
+            border-bottom: 1px solid #e6e9ef;
+            font-weight: 600
+        }
+
+        #chat {
+            flex: 1;
+            overflow: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px
+        }
+
+        .msg {
+            max-width: 78%;
+            padding: 10px 12px;
+            border-radius: 8px;
+            box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03)
+        }
+
+        .user {
+            align-self: flex-end;
+            background: var(--user)
+        }
+
+        .assistant {
+            align-self: flex-start;
+            background: var(--assistant)
+        }
+
+        .meta {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 6px
+        }
+
+        .composer {
+            display: flex;
+            padding: 12px;
+            background: #fff;
+            border-top: 1px solid #e6e9ef;
+            gap: 8px
+        }
+
+        textarea {
+            flex: 1;
+            min-height: 48px;
+            max-height: 140px;
+            resize: vertical;
+            padding: 8px;
+            border: 1px solid #dfe6f0;
+            border-radius: 6px;
+            font-size: 14px
+        }
+
+        button {
+            padding: 10px 14px;
+            border-radius: 6px;
+            border: 0;
+            background: #0366d6;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer
+        }
+
+        button:disabled {
+            opacity: .5;
+            cursor: default
+        }
+
+        .small {
+            font-size: 12px;
+            color: #888
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <header>Chat Demo（POST -> /api/chat，SSE 流式返回）</header>
+
+        <main id="chat" role="log" aria-live="polite"></main>
+
+        <div class="composer">
+            <textarea id="input" placeholder="输入消息，按 Ctrl+Enter 发送"></textarea>
+            <div style="display:flex;flex-direction:column;gap:8px">
+                <button id="send">发送</button>
+                <div class="small" id="status">空闲</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const chatEl = document.getElementById('chat');
+        const inputEl = document.getElementById('input');
+        // 如果页面中没有发送按钮或状态，创建简单的控件以避免错误
+        let sendBtn = document.getElementById('send');
+        let statusEl = document.getElementById('status');
+        if (!sendBtn) {
+          const wrapper = document.querySelector('.composer > div');
+          sendBtn = document.createElement('button');
+          sendBtn.id = 'send';
+          sendBtn.textContent = '发送';
+          wrapper.appendChild(sendBtn);
+        }
+        if (!statusEl) {
+          statusEl = document.createElement('div');
+          statusEl.id = 'status';
+          statusEl.className = 'small';
+          statusEl.textContent = '空闲';
+          document.querySelector('.composer > div').appendChild(statusEl);
+        }
+
+        function appendMessage(role, htmlContent) {
+          const wrap = document.createElement('div');
+          wrap.className = 'msg ' + (role === 'user' ? 'user' : 'assistant');
+          wrap.innerHTML = htmlContent;
+          chatEl.appendChild(wrap);
+          chatEl.scrollTop = chatEl.scrollHeight;
+          return wrap;
+        }
+
+        function setStatus(t) { statusEl.textContent = t; }
+
+        // 去除片段间多余空格并保留合理空格（特别针对中英文混合）
+        function normalizeSpaces(s) {
+          if (!s) return s;
+          // 合并连续空格为一个
+          s = s.replace(/ {2,}/g, ' ');
+          // 去掉 CJK（中日韩）字符之间的空格
+          s = s.replace(/([\u4E00-\u9FFF])\s+([\u4E00-\u9FFF])/g, '$1$2');
+          // 去掉中文标点前的空格
+          s = s.replace(/\s+([，。！？；：、])/g, '$1');
+          return s;
+        }
+
+        // 更稳健的 SSE 流解析与拼接，避免在片段之间产生多余空行
+        async function sendMessage() {
+          const text = inputEl.value.trim();
+          if (!text) return;
+          appendMessage('user', `<div class="meta">你</div><div>${escapeHtml(text)}</div>`);
+          inputEl.value = '';
+          setStatus('等待服务器响应...');
+          sendBtn.disabled = true;
+
+          const assistantEl = appendMessage('assistant', `<div class="meta">助手</div><div class="content"></div>`);
+          const contentEl = assistantEl.querySelector('.content');
+
+          try {
+            const resp = await fetch('/api/chat', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ message: text })
+            });
+
+            if (!resp.ok || !resp.body) {
+              const errText = await resp.text();
+              contentEl.textContent = '错误: ' + resp.status + ' ' + errText;
+              setStatus('错误');
+              return;
+            }
+
+            const reader = resp.body.getReader();
+            const decoder = new TextDecoder();
+            let buffer = '';
+
+            while (true) {
+              const { value, done } = await reader.read();
+              if (done) break;
+              buffer += decoder.decode(value, { stream: true });
+
+              // 按换行符分割响应
+              let parts = buffer.split('\n');
+              buffer = parts.pop(); // 保留不完整的部分
+
+              for (const part of parts) {
+                if (!part.trim()) continue;
+                
+                try {
+                  const jsonResponse = JSON.parse(part);
+                  
+                  if (jsonResponse.type === 'done') {
+                    setStatus('完成');
+                    continue;
+                  }
+                  
+                  if (jsonResponse.type === 'message') {
+                    const cleaned = normalizeSpaces(jsonResponse.content);
+                    contentEl.textContent += cleaned;
+                    chatEl.scrollTop = chatEl.scrollHeight;
+                  }
+
+                  if (jsonResponse.type === 'error') {
+                    contentEl.textContent += '\n错误: ' + jsonResponse.content;
+                    setStatus('错误');
+                  }
+                } catch (e) {
+                  console.warn('解析响应JSON失败:', e);
+                  continue;
+                }
+              }
+            }
+
+            // 处理残余 buffer（若有）
+            if (buffer.trim()) {
+              try {
+                const jsonResponse = JSON.parse(buffer);
+                if (jsonResponse.type === 'message') {
+                  const cleaned = normalizeSpaces(jsonResponse.content);
+                  contentEl.textContent += cleaned;
+                }
+              } catch (e) {
+                console.warn('解析最后的buffer失败:', e);
+              }
+            }
+
+            setStatus('完成');
+          } catch (err) {
+            contentEl.textContent += '\n\n错误：' + (err.message || err);
+            setStatus('错误');
+          } finally {
+            sendBtn.disabled = false;
+          }
+        }
+
+        // 简单转义
+        function escapeHtml(s) {
+          return (s || '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;', "'":'&#39;' }[c]));
+        }
+
+        // 事件绑定
+        sendBtn.addEventListener('click', sendMessage);
+        inputEl.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' && e.ctrlKey) {
+            e.preventDefault();
+            sendMessage();
+          }
+        });
+
+        // 初始提示
+        appendMessage('assistant', `<div class="meta">助手</div><div class="small">欢迎，输入消息并点击“发送”来演示 POST -> /api/chat 的 SSE 流式返回。</div>`);
+    </script>
+</body>
+
+</html>
