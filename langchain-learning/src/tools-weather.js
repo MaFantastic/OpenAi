@@ -1,3 +1,4 @@
+/* 写一个获取天气的 tool ，并使用 llm 绑定和调用 */
 import { tool } from '@langchain/core/tools'
 import { z } from 'zod'
 import { ChatDeepSeek } from '@langchain/deepseek'
