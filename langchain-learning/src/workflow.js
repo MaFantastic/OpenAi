@@ -16,7 +16,7 @@ const llm = new ChatDeepSeek({
     model: 'deepseek-chat',
 })
 
-// 裁剪消息
+// 定义消息裁剪器
 const trimmer = trimMessages({
     maxTokens: 10,
     strategy: "last",
@@ -26,22 +26,22 @@ const trimmer = trimMessages({
     startOn: "human",
 });
 
-// Define the function that calls the model
+// 定义调用模型的函数
 const callModel = async (state) => {
     const trimmedMessages = await trimmer.invoke(state.messages);
-    console.log('Input messages length: ', trimmedMessages.length);
+    console.log('输入消息长度: ', trimmedMessages.length);
     const response = await llm.invoke(trimmedMessages);
     return { messages: response }
 }
 
-// Define a new graph
+// 定义新的有状态图
 const workflow = new StateGraph(MessagesAnnotation)
-    // Define the node and edge
+    // 定义节点和边
     .addNode('model', callModel)
     .addEdge(START, 'model')
     .addEdge('model', END)
 
-// Add memory
+// 添加记忆存储器
 const memory = new MemorySaver()
 const app = workflow.compile({ checkpointer: memory })
 
