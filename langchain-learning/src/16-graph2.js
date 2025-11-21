@@ -1,3 +1,4 @@
+/* 写一个 LangGraph 函数式API的例子，使用 task 和 entrypoint 实现一个简单的计算器 */
 import { tool } from "@langchain/core/tools";
 import { HumanMessage, SystemMessage } from "@langchain/core/messages";
 import * as z from "zod";

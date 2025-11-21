@@ -1,3 +1,4 @@
+/* 写一个 LangGraph 面向对象API的例子，使用 StateGraph 实现一个简单的计算器 */
 import { tool } from '@langchain/core/tools'
 import * as z from 'zod'
 import { ChatDeepSeek } from '@langchain/deepseek'
