@@ -242,58 +242,58 @@ ${resumeText}
     console.log('正在分析简历...\n');
     const result = await agent.invoke([new HumanMessage(prompt)], config);
     
-    // // 输出所有消息
-    // console.log('\n' + '='.repeat(80));
-    // console.log('简历优化报告');
-    // console.log('='.repeat(80) + '\n');
+    // 输出所有消息
+    console.log('\n' + '='.repeat(80));
+    console.log('简历优化报告');
+    console.log('='.repeat(80) + '\n');
     
-    // let lastAIMessage = null;
-    // let toolResults = [];
+    let lastAIMessage = null;
+    let toolResults = [];
     
-    // for (const message of result) {
-    //     const messageType = message.getType();
-    //     if (messageType === 'ai') {
-    //         // 保存最后一个非空的 AI 消息
-    //         if (message.text && message.text.trim()) {
-    //             lastAIMessage = message.text;
-    //         }
-    //     } else if (messageType === 'tool') {
-    //         // 收集工具结果
-    //         const toolName = message.name || '工具';
-    //         toolResults.push({
-    //             name: toolName,
-    //             result: message.text
-    //         });
-    //         console.log(`[${toolName}执行完成]`);
-    //     }
-    // }
+    for (const message of result) {
+        const messageType = message.getType();
+        if (messageType === 'ai') {
+            // 保存最后一个非空的 AI 消息
+            if (message.text && message.text.trim()) {
+                lastAIMessage = message.text;
+            }
+        } else if (messageType === 'tool') {
+            // 收集工具结果
+            const toolName = message.name || '工具';
+            toolResults.push({
+                name: toolName,
+                result: message.text
+            });
+            console.log(`[${toolName}执行完成]`);
+        }
+    }
     
-    // // 输出工具结果的摘要（如果是最后一个工具 generateSuggestions）
-    // const suggestionsTool = toolResults.find(t => t.name === 'generateSuggestions');
-    // if (suggestionsTool) {
-    //     console.log('\n' + '-'.repeat(80));
-    //     console.log('最终优化建议：');
-    //     console.log('-'.repeat(80) + '\n');
-    //     console.log(suggestionsTool.result);
-    //     console.log('\n' + '='.repeat(80) + '\n');
-    // } else if (lastAIMessage) {
-    //     // 如果没有找到建议工具，显示最后一个 AI 消息
-    //     console.log('\n' + '-'.repeat(80));
-    //     console.log('最终优化建议：');
-    //     console.log('-'.repeat(80) + '\n');
-    //     console.log(lastAIMessage);
-    //     console.log('\n' + '='.repeat(80) + '\n');
-    // } else {
-    //     // 显示所有工具结果
-    //     console.log('\n' + '-'.repeat(80));
-    //     console.log('分析结果：');
-    //     console.log('-'.repeat(80) + '\n');
-    //     for (const toolResult of toolResults) {
-    //         console.log(`\n[${toolResult.name}]:`);
-    //         console.log(toolResult.result.substring(0, 500) + (toolResult.result.length > 500 ? '...' : ''));
-    //     }
-    //     console.log('\n' + '='.repeat(80) + '\n');
-    // }
+    // 输出工具结果的摘要（如果是最后一个工具 generateSuggestions）
+    const suggestionsTool = toolResults.find(t => t.name === 'generateSuggestions');
+    if (suggestionsTool) {
+        console.log('\n' + '-'.repeat(80));
+        console.log('最终优化建议：');
+        console.log('-'.repeat(80) + '\n');
+        console.log(suggestionsTool.result);
+        console.log('\n' + '='.repeat(80) + '\n');
+    } else if (lastAIMessage) {
+        // 如果没有找到建议工具，显示最后一个 AI 消息
+        console.log('\n' + '-'.repeat(80));
+        console.log('最终优化建议：');
+        console.log('-'.repeat(80) + '\n');
+        console.log(lastAIMessage);
+        console.log('\n' + '='.repeat(80) + '\n');
+    } else {
+        // 显示所有工具结果
+        console.log('\n' + '-'.repeat(80));
+        console.log('分析结果：');
+        console.log('-'.repeat(80) + '\n');
+        for (const toolResult of toolResults) {
+            console.log(`\n[${toolResult.name}]:`);
+            console.log(toolResult.result.substring(0, 500) + (toolResult.result.length > 500 ? '...' : ''));
+        }
+        console.log('\n' + '='.repeat(80) + '\n');
+    }
     
     return result;
 }
