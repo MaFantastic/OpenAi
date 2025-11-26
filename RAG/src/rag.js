@@ -1,3 +1,4 @@
+/* 基于LangGraph的RAG框架：RAG检索增强生成 */
 import 'dotenv/config'
 import { ChatDeepSeek } from '@langchain/deepseek'
 import { Annotation, END, START, StateGraph } from '@langchain/langgraph'
