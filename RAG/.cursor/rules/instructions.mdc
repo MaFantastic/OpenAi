@@ -1,0 +1,17 @@
+---
+alwaysApply: true
+---
+
+这是一个 AI Agent RAG （Retrieval Augmented Generation）功能演示项目。
+
+运行环境是 Nodejs ，包管理工具是 npm ，语言是 Javascript
+
+框架使用 LangChain 和 LangGraph
+
+大模型默认使用 deepseek-chat ，除非用户特别指定使用其他模型。
+
+Embedding 模型使用 AlibabaTongyiEmbeddings
+
+向量数据库使用本地启动的 ChromaDB ，地址是 http://localhost:8000
+
+默认使用中文回答所有内容，除非用户特别指定使用其他语言。

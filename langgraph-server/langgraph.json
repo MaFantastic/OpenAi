@@ -1,0 +1,7 @@
+{
+  "graphs": {
+    "agent": "./src/graphs/agent.ts:app"
+  },
+  "env": ".env"
+}
+

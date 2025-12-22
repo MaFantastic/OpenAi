@@ -1,0 +1,38 @@
+{
+  "name": "langgraph-server",
+  "version": "1.0.0",
+  "description": "LangGraph AI Agent 服务",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "langgraphjs dev",
+    "kill-port": "powershell -ExecutionPolicy Bypass -File kill-port.ps1 -Port 2024",
+    "watch": "tsc --watch",
+    "clean": "rm -rf dist",
+    "type-check": "tsc --noEmit"
+  },
+  "keywords": [
+    "langchain",
+    "langgraph",
+    "ai",
+    "agent"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@langchain/langgraph-cli": "^1.1.2",
+    "@types/node": "^20.0.0",
+    "ts-node": "^10.9.0",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@langchain/core": "^0.3.79",
+    "@langchain/langgraph": "^0.2.0",
+    "@langchain/openai": "^0.3.0",
+    "@langchain/tavily": "^1.1.0",
+    "dotenv": "^16.0.0",
+    "zod": "^3.22.0"
+  }
+}
