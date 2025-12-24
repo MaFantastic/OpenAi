@@ -8,7 +8,7 @@ const weatherSchema = z.object({
 });
 
 // 天气查询工具
-const weatherTool: any = new DynamicStructuredTool({
+const weatherTool: any = new (DynamicStructuredTool as any)({
   name: "get_weather",
   description: "查询指定城市的天气信息，包括温度、天气状况、湿度等",
   schema: weatherSchema,

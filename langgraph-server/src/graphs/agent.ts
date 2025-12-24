@@ -1,5 +1,5 @@
 import { StateGraph, MessagesAnnotation } from "@langchain/langgraph";
-import { callModel } from "./callModel";
+import { callModel, pdfHandler } from "./callModel";
 import { toolsNode } from "./toolNode";
 import { AIMessage } from "@langchain/core/messages";
 
@@ -20,12 +20,14 @@ function routeModelOutput(state: typeof MessagesAnnotation.State) {
 
 // 创建图（仅保留 workflow 定义）
 const workflow = new StateGraph(MessagesAnnotation)
-  // 定义两个节点，在它们之间循环
+  // 定义节点：先处理 PDF（如果有），然后调用模型，再可能调用工具
+  .addNode("pdfHandler", pdfHandler)
   .addNode("callModel", callModel)
   .addNode("tools", toolsNode)
-  // 设置入口点为 `callModel`
+  // 设置入口点为 `pdfHandler`
   // 这意味着这个节点是第一个被调用的
-  .addEdge("__start__", "callModel")
+  .addEdge("__start__", "pdfHandler")
+  .addEdge("pdfHandler", "callModel")
   .addConditionalEdges(
     "callModel",
     routeModelOutput,
