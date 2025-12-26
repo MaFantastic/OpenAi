@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>专户周度运作情况报告</title>
+    <style>
+        body {
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 20px;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 5px;
+        }
+        h1 {
+            text-align: center;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        h2 {
+            font-size: 20px;
+            margin-top: 30px;   
+            margin-bottom: 0;
+        }
+        h3 {
+            font-size: 18px;
+            margin: 0;
+            display: inline-block;
+        }
+        p{
+            display: inline;
+            margin:0;
+        }
+        .greeting {
+            margin-bottom: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        th, td {
+            border: 1px solid #000;
+            padding: 10px 12px;
+            text-align: center;
+        }
+        th {
+            background-color: #ec0e0d;
+            font-weight: bold;
+            color: #fff;
+        }
+        .table-caption {
+            font-weight: bold;
+            font-size: 15px;
+            display: block;
+            margin: 0;
+        }
+        .indent {
+            padding-left: 25px;
+        }
+        .highlight {
+            background-color: #fffacd;
+            padding: 2px 4px;
+        }
+        .contact-info {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+        .signature {
+            margin-top: 30px;
+        }
+        .note {
+            font-size: 12px;
+            color: #777;
+            margin-top: 5px;
+        }
+        .section {
+            margin-bottom: 25px;
+        }
+        .sub-section {
+            margin-left: 27px;
+            margin-bottom: 20px;
+        }
+        .bolder {
+            font-weight: bold;
+        }
+        .table-container {
+            overflow-x: auto;
+            /* margin: 20px 0; */
+        }
+        .block{
+            display: block;
+        }
+        .margin-left-30{
+            margin-left: 30px;
+        }
+        .margin-left-20{
+            margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="greeting">
+            <p class="block">各位领导：</p>
+            <p class="margin-left-20">您好！截至上周五（2025年11月21日)，专户周度运作情况统计如下，请审阅。</p>
+        </div>
+        
+        <div class="section">
+            <h2>1) 账户规模概况</h2>
+            
+            <div class="sub-section">
+                <h3>1) 账户整体情况：</h3>
+                <p>截至报告期末（2025年11月21日)，专户（含投顾账户）共计222个，规模1867.01亿元，较上报告期末（2025年11月14日）减少-8.07亿元；普通专户170个，规模合计921.31亿元，较上报告期末（2025年11月14日）减少-8.86亿元。</p>
+                
+                <p class="table-caption">表：专户数量及规模情况（包含保险保障组合1个，不含QFII组合）</p>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>分类</th>
+                                <th>组合数</th>
+                                <th>本次规模（亿）</th>
+                                <th>规模占比</th>
+                                <th>周度规模变动（亿）</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="bolder">一、普通专户</td>
+                                <td>170</td>
+                                <td>921.31</td>
+                                <td>49.35%</td>
+                                <td>-8.86</td>
+                            </tr>
+                            <tr>
+                                <td class="bolder indent">1.境内</td>
+                                <td class="bolder">135</td>
+                                <td class="bolder">848.58</td>
+                                <td class="bolder">45.45%</td>
+                                <td class="bolder">-10.44</td>
+                            </tr>
+                            <tr>
+                                <td class="indent">1.1 权益</td>
+                                <td>48</td>
+                                <td>255.50</td>
+                                <td>13.68%</td>
+                                <td>-9.41</td>
+                            </tr>
+                            <tr>
+                                <td class="indent">1.2 量化</td>
+                                <td>28</td>
+                                <td>20.67</td>
+                                <td>1.11%</td>
+                                <td>-0.51</td>
+                            </tr>
+                            <tr>
+                                <td class="indent">1.3 FOF</td>
+                                <td>9</td>
+                                <td>26.14</td>
+                                <td>1.40%</td>
+                                <td>0.69</td>
+                            </tr>
+                            <tr>
+                                <td class="indent">1.4 ABS</td>
+                                <td>20</td>
+                                <td>282.46</td>
+                                <td>15.13%</td>
+                                <td>5.43</td>
+                            </tr>
+                            <tr>
+                                <td class="indent">1.5 其他固收类</td>
+                                <td>30</td>
+                                <td>263.80</td>
+                                <td>14.13%</td>
+                                <td>-6.64</td>
+                            </tr>
+                            <tr>
+                                <td class="bolder indent">2.境外</td>
+                                <td class="bolder">35</td>
+                                <td class="bolder">72.73</td>
+                                <td class="bolder">3.90%</td>
+                                <td class="bolder">1.59</td>
+                            </tr>
+                            <tr>
+                                <td class="indent">2.1 QDII</td>
+                                <td>35</td>
+                                <td>72.73</td>
+                                <td>3.90%</td>
+                                <td>1.59</td>
+                            </tr>
+                            <tr>
+                                <td class="bolder">二、老产品及定制类</td>
+                                <td>26</td>
+                                <td>866.93</td>
+                                <td>46.43%</td>
+                                <td>0.24</td>
+                            </tr>
+                            <tr>
+                                <td class="bolder">三、非TOF投顾账户</td>
+                                <td>23</td>
+                                <td>67.94</td>
+                                <td>3.64%</td>
+                                <td>0.89</td>
+                            </tr>
+                            <tr>
+                                <td class="bolder">四、境外专户</td>
+                                <td>3</td>
+                                <td>10.83</td>
+                                <td>0.58%</td>
+                                <td>-0.34</td>
+                            </tr>
+                            <tr>
+                                <td class="bolder">合计</td>
+                                <td class="bolder">222</td>
+                                <td class="bolder">1867.01</td>
+                                <td class="bolder">100.00%</td>
+                                <td class="bolder">-8.07</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="sub-section">
+                <h3>2) 报告期内资金（1亿元以上）申赎情况</h3>
+                <p>有：中邮理财ABS策略账户追加资金3.34亿元，宁银理财南向通账户追加资金1.50亿元，华夏银行ABS策略（投顾）账户追加资金1.20亿元，施罗德交银理财ABS策略账户追加资金1.10亿元，贝莱德建信理财ABS策略账户追加资金1.09亿元，信银理财绝对收益FOF策略账户追加资金1.03亿元；光大银行综合债策略账户提取资金4.32亿元，东莞银行综合债策略账户提取资金1.80亿元。</p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>2) 账户新增终止情况</h2>
+            <p>报告期内新增账户2个。</p>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>账户名称</th>
+                            <th>类型</th>
+                            <th>规模(亿元)</th>
+                            <th>成立日期</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="4" style="text-align: center;">（此处为新增账户表格）</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <p>报告期内终止账户2个。</p>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>账户名称</th>
+                            <th>类型</th>
+                            <th>规模(亿元)</th>
+                            <th>终止日期</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="4" style="text-align: center;">（此处为终止账户表格）</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>3) 专户业绩概况</h2>
+            
+            <div class="sub-section">
+                <h3 class="block">1) 大类账户业绩概览与收益排名</h3>
+                <p><strong class="margin-left-30">业绩概览：</strong>境内专户今年以来规模加权收益为7.37%，报告期内规模加权收益为-1.22%。其中，权益账户今年以来规模加权收益为18.80%，报告期内规模加权收益为-3.57%；量化组合今年以来规模加权收益为16.51%，报告期内规模加权收益为-2.80%；FOF组合今年以来规模加权收益为5.95%，报告期内规模加权收益为-1.09%；固收+组合今年以来规模加权收益为2.23%，报告期内规模加权收益为-0.86%；ABS组合今年以来规模加权收益为1.69%，报告期内规模加权收益为0.05%；债券组合今年以来规模加权收益为1.83%，报告期内规模加权收益为>0.00%。</p>
+                
+                <p class="block"><strong class="margin-left-30">收益排名：</strong>报告期内固收+及含权类账户跌多涨少，华夏国寿中证800指数增强股票型分红险(0.03%)、华夏国寿中证800指数增强股票型传统险(0.03%)、华夏基金羲和1号(0.02%)小幅收涨，华夏量化卓越1号(-8.30%)、华夏阳光增盈1号(-7.34%)、华夏盈和1号(-6.07%)回撤幅度较大；境内固收账户涨跌分化，华夏昇金稳健1号(0.13%)、华夏华享固收1号(0.12%)、华夏毅恒稳利1号(0.11%)收益前三，华璟固收1号(-0.15%)、华夏纯债3号(-0.06%)、华夏海港债券(-0.06%)表现暂时落后。</p>
+            </div>
+            
+            <div class="sub-section">
+                <h3>2) 高净值客户委托账户情况：</h3>
+                <p class="indent block"><strong>a) 规模上：</strong>截至报告期末（2025年11月21日)，高净值客户委托账户（不包括中石化项目组合）46个，规模合计87.92亿元，较上报告期末（2025年11月14日)减少1.16亿元。</p>
+                <p class="indent block"><strong>b) 业绩上：</strong>截至报告期末（2025年11月21日)，46个高净值客户委托账户今年以来规模加权收益10.47%,今年以来规模加权超额收益6.38%;上周规模加权收益-1.27%,上周规模加权超额收益-0.94%。从个户角度看，今年以来高净值客户委托账户涨多跌少，华夏致远1号(77.49%)、华夏华晓1号(45.55%)、华夏恒盈2号(35.14%)涨幅靠前，华夏中证500指数增强智远2号(-2.66%)、华夏中证500指数增强智远1号(-1.77%)、华夏常青甄选1号(-0.03%)跌幅前三；报告期内高净值客户委托账户跌多涨少，华夏华盈海外债1号(2.97%)、华夏华盈海外债2号(2.60%)、华夏华盈海外债3号(0.59%)收益领先，华夏量化卓越1号(-8.30%)、华夏中证500指数增强智胜2号(-5.39%)、华夏中证500指数增强智胜1号(-5.38%)回撤幅度较大。</p>
+            </div>
+            
+            <div class="sub-section">
+                <h3>3) 对公代销客户委托账户情况：</h3>
+                <p class="indent block"><strong>a) 规模上：</strong>截至报告期末（2025年11月21日)，高净值客户委托账户（不包括中石化项目组合）46个，规模合计87.92亿元，较上报告期末（2025年11月14日)减少1.16亿元。</p>
+                <p class="indent block"><strong>b) 业绩上：</strong>截至报告期末（2025年11月21日)，9个对公代销账户今年以来规模加权收益1.37%,今年以来规模加权超额收益-1.21%;上周规模加权收益-0.01%,上周规模加权超额收益-0.07%。从个户角度来看，今年以来，招商银行华夏鼎华尊享2号(1.84%)、中信银行华夏信华海外尊享1号(1.83%)、招商银行华夏鼎华尊享3号(1.81%)绝对收益靠前，业绩基准达成方面，中信银行华夏信华战略尊享2号(今年以来收益：1.47%，超越基准0.17%)、中信银行华夏信华战略尊享3号(今年以来收益：0.53%，超越基准0.09%)超越基准；报告期内，对公代销账户整体收涨，平均收益0.03%。</p>
+            </div>
+            
+            <div class="sub-section">
+               <h3>4) 保险客户委托账户业绩情况：</h3>
+               <p class="indent block"><strong>a) 规模上：</strong>截至报告期末（2025年11月21日)，高净值客户委托账户（不包括中石化项目组合）46个，规模合计87.92亿元，较上报告期末（2025年11月14日)减少1.16亿元。</p>
+               <p class="indent block"><strong>b) 业绩上：</strong>截至报告期末（2025年11月21日)，40个保险客户委托账户今年以来规模加权收益8.22%,今年以来规模加权超额收益-0.27%;上周规模加权收益-1.19%,上周规模加权超额收益0.10%。从个户角度来看，今年以来保险账户整体收涨， 华夏国民养老5号(48.42%)、华夏君龙人寿6号(47.60%)、华夏国民养老8号(38.70%)涨幅靠前，华夏国民养老9号(-5.57%)收益为负；报告期内保险委托账户跌多涨少，华夏海港利率债(0.04%)、保险保障基金(0.03%)、华夏国寿中证800指数增强股票型分红险(0.03%)收益为正，华夏国寿股份港股通新经济股票分红可供出售(-5.03%)、华夏大家人寿权益配置型基金组合(-4.53%)、华夏高分红股票型(-3.39%)跌幅前三。</p>
+            </div>
+            
+            <div class="sub-section">
+                <h3 class="block">5) 战略客户业绩概览</h3>
+                <p class="block margin-left-20">截至报告期末（2025年11月21日)，17个战略组合今年以来规模加权收益14.99%,报告期内规模加权收益-3.06%。</p>
+                <p class="margin-left-20">从个户角度来看，今年以来存量战略组合全面收涨，华夏国寿股份港股通新经济股票分红可供出售(30.30%)、华夏君康人寿1号(26.90%)、华夏高分红股票型(25.23%)涨幅靠前；报告期内战略组合跌多涨少，华夏开阳1号(0.04%)、华夏海港利率债(0.04%)收益为正，华夏国寿股份港股通新经济股票分红可供出售(-5.03%)、华夏汇金资管(-4.36%)、华夏高分红股票型(-3.39%)跌幅靠前。</p>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>战略客户</th>
+                                <th>组合名称</th>
+                                <th>今年以来收益</th>
+                                <th>报告期内收益</th>
+                                <th>规模(亿元)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="5" style="text-align: center;">（此处为战略客户业绩概览表格）</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+    </div>
+</body>
+</html>

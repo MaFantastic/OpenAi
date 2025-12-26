@@ -58,6 +58,13 @@ You will need to use the environment variables [defined in `.env.example`](.env.
 
 > Note: You should not commit your `.env` file or it will expose secrets that will allow others to control access to your various AI and authentication provider accounts.
 
+Required environment variables for authentication (add to your local `.env.local`):
+
+```
+AUTH_SECRET=change_me_to_a_long_random_string
+NEXTAUTH_SECRET=change_me_to_a_long_random_string
+```
+
 1. Install Vercel CLI: `npm i -g vercel`
 2. Link local instance with Vercel and GitHub accounts (creates `.vercel` directory): `vercel link`
 3. Download your environment variables: `vercel env pull`

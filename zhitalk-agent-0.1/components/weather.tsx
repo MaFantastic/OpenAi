@@ -283,17 +283,44 @@ export function Weather({
 }: {
   weatherAtLocation?: WeatherAtLocation;
 }) {
-  const currentHigh = Math.max(
-    ...weatherAtLocation.hourly.temperature_2m.slice(0, 24)
-  );
-  const currentLow = Math.min(
-    ...weatherAtLocation.hourly.temperature_2m.slice(0, 24)
-  );
+  // Merge provided data with SAMPLE to ensure nested fields exist and avoid runtime errors
+  const safeWeather: WeatherAtLocation = {
+    ...SAMPLE,
+    ...(weatherAtLocation || {}),
+    current_units: { ...SAMPLE.current_units, ...(weatherAtLocation?.current_units ?? {}) },
+    current: { ...SAMPLE.current, ...(weatherAtLocation?.current ?? {}) },
+    hourly_units: { ...SAMPLE.hourly_units, ...(weatherAtLocation?.hourly_units ?? {}) },
+    hourly: {
+      ...SAMPLE.hourly,
+      ...(weatherAtLocation?.hourly ?? {}),
+    },
+    daily_units: { ...SAMPLE.daily_units, ...(weatherAtLocation?.daily_units ?? {}) },
+    daily: {
+      ...SAMPLE.daily,
+      ...(weatherAtLocation?.daily ?? {}),
+    },
+  };
 
-  const isDay = isWithinInterval(new Date(weatherAtLocation.current.time), {
-    start: new Date(weatherAtLocation.daily.sunrise[0]),
-    end: new Date(weatherAtLocation.daily.sunset[0]),
-  });
+  const weather = safeWeather;
+
+  const hourlyTemps = Array.isArray(weather.hourly?.temperature_2m)
+    ? weather.hourly.temperature_2m
+    : SAMPLE.hourly.temperature_2m;
+
+  const currentHigh = hourlyTemps.length
+    ? Math.max(...hourlyTemps.slice(0, 24))
+    : Math.ceil(SAMPLE.current.temperature_2m);
+  const currentLow = hourlyTemps.length
+    ? Math.min(...hourlyTemps.slice(0, 24))
+    : Math.ceil(SAMPLE.current.temperature_2m);
+
+  const isDay = isWithinInterval(
+    new Date(weather.current?.time ?? SAMPLE.current.time),
+    {
+      start: new Date(weather.daily?.sunrise?.[0] ?? SAMPLE.daily.sunrise[0]),
+      end: new Date(weather.daily?.sunset?.[0] ?? SAMPLE.daily.sunset[0]),
+    }
+  );
 
   const [isMobile, setIsMobile] = useState(false);
 
@@ -310,22 +337,21 @@ export function Weather({
 
   const hoursToShow = isMobile ? 5 : 6;
 
-  const currentTimeIndex = weatherAtLocation.hourly.time.findIndex(
-    (time) => new Date(time) >= new Date(weatherAtLocation.current.time)
+  const currentTimeIndex = (weather.hourly?.time || SAMPLE.hourly.time).findIndex(
+    (time) => new Date(time) >= new Date(weather.current?.time ?? SAMPLE.current.time)
   );
 
-  const displayTimes = weatherAtLocation.hourly.time.slice(
+  const displayTimes = (weather.hourly?.time || SAMPLE.hourly.time).slice(
     currentTimeIndex,
     currentTimeIndex + hoursToShow
   );
-  const displayTemperatures = weatherAtLocation.hourly.temperature_2m.slice(
-    currentTimeIndex,
-    currentTimeIndex + hoursToShow
-  );
+  const displayTemperatures = (weather.hourly?.temperature_2m ||
+    SAMPLE.hourly.temperature_2m
+  ).slice(currentTimeIndex, currentTimeIndex + hoursToShow);
 
   const location =
-    weatherAtLocation.cityName ||
-    `${weatherAtLocation.latitude?.toFixed(1)}°, ${weatherAtLocation.longitude?.toFixed(1)}°`;
+    weather.cityName ||
+    `${weather.latitude?.toFixed(1)}°, ${weather.longitude?.toFixed(1)}°`;
 
   return (
     <div
@@ -346,7 +372,7 @@ export function Weather({
         <div className="mb-2 flex items-center justify-between">
           <div className="font-medium text-white/80 text-xs">{location}</div>
           <div className="text-white/60 text-xs">
-            {format(new Date(weatherAtLocation.current.time), "MMM d, h:mm a")}
+            {format(new Date(weather.current?.time ?? SAMPLE.current.time), "MMM d, h:mm a")}
           </div>
         </div>
 
@@ -361,9 +387,9 @@ export function Weather({
               {isDay ? <SunIcon size={32} /> : <MoonIcon size={32} />}
             </div>
             <div className="font-light text-3xl text-white">
-              {n(weatherAtLocation.current.temperature_2m)}
+              {n(weather.current?.temperature_2m ?? SAMPLE.current.temperature_2m)}
               <span className="text-lg text-white/80">
-                {weatherAtLocation.current_units.temperature_2m}
+                {weather.current_units?.temperature_2m ?? SAMPLE.current_units.temperature_2m}
               </span>
             </div>
           </div>
@@ -410,7 +436,7 @@ export function Weather({
                   </div>
 
                   <div className="font-medium text-white text-xs">
-                    {n(displayTemperatures[index])}°
+                    {n(displayTemperatures[index] ?? SAMPLE.current.temperature_2m)}°
                   </div>
                 </div>
               );
@@ -421,11 +447,17 @@ export function Weather({
         <div className="mt-2 flex justify-between text-white/60 text-xs">
           <div>
             Sunrise:{" "}
-            {format(new Date(weatherAtLocation.daily.sunrise[0]), "h:mm a")}
+            {format(
+              new Date(weather.daily?.sunrise?.[0] ?? SAMPLE.daily.sunrise[0]),
+              "h:mm a"
+            )}
           </div>
           <div>
             Sunset:{" "}
-            {format(new Date(weatherAtLocation.daily.sunset[0]), "h:mm a")}
+            {format(
+              new Date(weather.daily?.sunset?.[0] ?? SAMPLE.daily.sunset[0]),
+              "h:mm a"
+            )}
           </div>
         </div>
       </div>
