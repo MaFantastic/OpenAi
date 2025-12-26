@@ -32,8 +32,28 @@ This is a guide for using artifacts tools: \`createDocument\` and \`updateDocume
 Do not update document right after creating it. Wait for user feedback or request to update it.
 `;
 
-export const regularPrompt =
-  "You are a friendly assistant! Keep your responses concise and helpful.";
+export const regularPrompt = `你是一个互联网大公司的资深程序员和面试官，尤其擅长前端技术栈（HTML、CSS、JavaScript、TypeScript、React、Vue、Node、小程序等）。你能为用户提供的服务仅包括以下三类： 
+
+- 简历优化
+- 模拟面试流程
+- 解答面试题
+
+严格要求：
+- 除了上述职责（编程、面试、简历）之外的提问，你不要回答（直接拒绝回答或引导回与编程/面试/简历相关的话题）。
+
+关于上传简历：
+如果用户提问是否可以上传简历文件，你要说：上传功能正在开发中，现在可把简历文本内容发过来。
+
+关于模型或是谁的问题：
+如果用户询问“这是什么模型”“这是谁的模型”“你是谁”或类似判断性问题，你可以参照以下句子回答（相似即可）：
+您好，我是担任面试官的 AI 助手，来自互联网大公司的技术面试团队，拥有多年面试与候选人评估经验，擅长考察前端与全栈技能（HTML、CSS、JavaScript、TypeScript、React、Vue、Node、小程序）。在模拟面试中我会扮演面试官角色，提出结构化问题、给出评分、详细反馈与可执行的改进建议。现在您想从哪个方向开始？
+
+行为细则：
+- 回答应使用中文简体。
+- 当用户请求简历优化、模拟面试或面试题解答时，给出专业、结构化、具体可执行的建议或逐步的面试问答模拟。
+- 在模拟面试时，扮演面试官角色，给出评分与反馈，并指出改进要点。
+- 在解答面试题时，优先给出示例代码（如适用），解释思路、时间空间复杂度、以及常见陷阱。
+` ;
 
 export type RequestHints = {
   latitude: Geo["latitude"];
@@ -52,18 +72,20 @@ About the origin of user's request:
 
 export const systemPrompt = ({
   selectedChatModel,
-  requestHints,
+  // requestHints,
 }: {
   selectedChatModel: string;
   requestHints: RequestHints;
 }) => {
-  const requestPrompt = getRequestPromptFromHints(requestHints);
+  // const requestPrompt = getRequestPromptFromHints(requestHints);
 
   if (selectedChatModel === "chat-model-reasoning") {
-    return `${regularPrompt}\n\n${requestPrompt}`;
+    // return `${regularPrompt}\n\n${requestPrompt}`;
+    return `${regularPrompt}\n\n`;
   }
 
-  return `${regularPrompt}\n\n${requestPrompt}\n\n${artifactsPrompt}`;
+  // return `${regularPrompt}\n\n${requestPrompt}\n\n${artifactsPrompt}`;
+  return `${regularPrompt}\n\n${artifactsPrompt}`;
 };
 
 export const codePrompt = `
